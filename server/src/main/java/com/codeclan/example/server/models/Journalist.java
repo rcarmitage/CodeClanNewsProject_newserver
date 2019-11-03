@@ -1,22 +1,40 @@
-package com.codeclan.example.newsbackend.models;
+package com.codeclan.example.server.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 
+@Entity
+@Table(name="journalists")
 public class Journalist {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstName;
-    private String lastName;
-    private String phoneNumber;
-    private ArrayList<Article> articles;
-    private Boolean employed;
 
-    public Journalist(String firstName, String lastName, String phoneNumber, Boolean employed) {
+    @Column(name="first_name")
+    private String firstName;
+
+    @Column(name="last_name")
+    private String lastName;
+
+    @Column(name="phone_number")
+    private String phoneNumber;
+
+    @JsonIgnoreProperties("journalist")
+    @OneToMany(mappedBy = "journalist", fetch = FetchType.LAZY)
+    private ArrayList<Article> articles;
+
+//    @Column(name="employed")
+//    private Boolean employed;
+
+    public Journalist(String firstName, String lastName, String phoneNumber) {
         this.firstName =firstName;
         this.lastName =lastName;
         this.phoneNumber =phoneNumber;
         this.articles = new ArrayList<>();
-        this.employed =employed;
+//        this.employed = employed;
     }
 
     public Journalist() {
@@ -62,12 +80,12 @@ public class Journalist {
         this.articles = articles;
     }
 
-    public Boolean getEmployed() {
-        return employed;
-    }
-
-    public void setEmployed(Boolean employed) {
-        this.employed = employed;
-    }
+//    public Boolean getEmployed() {
+//        return employed;
+//    }
+//
+//    public void setEmployed(Boolean employed) {
+//        this.employed = employed;
+//    }
 
 }
